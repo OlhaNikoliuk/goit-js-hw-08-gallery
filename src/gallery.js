@@ -43,7 +43,7 @@ function createImageCardMarkup(images) {
 function onImageClick(evt) {
   evt.preventDefault();
 
-  window.addEventListener('keydown', onArrowKeyPress);
+  // window.addEventListener('keydown', onArrowKeyPress);
   window.addEventListener('keydown', onEscKeyPress);
 
 
@@ -96,19 +96,19 @@ console.log(refs.modalImgEl.src);
 // ===== 3 часть доп задания в процессе
 
 
-function onArrowKeyPress(evt) {
-  const ARROW_RIGHT_KEY = 'ArrowRight';
-  const ARROW_LEFT_KEY = 'ArrowLeft';
+// function onArrowKeyPress(evt) {
+//   const ARROW_RIGHT_KEY = 'ArrowRight';
+//   const ARROW_LEFT_KEY = 'ArrowLeft';
 
 
-  return imagesGallery.forEach((img, i = 0, array) => {
+//   return imagesGallery.forEach((img, i = 0, array) => {
     
-    if (refs.modalImgEl.src === img.original && evt.code === ARROW_RIGHT_KEY) {
-      refs.modalImgEl.src = array[i + 1].original;
-    }
-  });
+//     if (refs.modalImgEl.src === img.original && evt.code === ARROW_RIGHT_KEY) {
+//       refs.modalImgEl.src = array[i + 1].original;
+//     }
+//   });
 
-}
+// }
 
 
 
