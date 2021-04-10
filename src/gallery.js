@@ -11,15 +11,13 @@ const refs = {
   modalOverlay: document.querySelector('.lightbox__overlay'),
 }
 
+let currentIndex = 0;
 
 
 const galleryMarkup = createImageCardMarkup(imagesGallery);
 refs.galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
 
 refs.galleryContainer.addEventListener('click', onImageClick);
-refs.modalCloseBtn.addEventListener('click', onCloseBtnClick);
-refs.modalOverlay.addEventListener('click', onOverlayClick);
-
 
 function createImageCardMarkup(images) {
 
@@ -43,15 +41,12 @@ function createImageCardMarkup(images) {
 function onImageClick(evt) {
   evt.preventDefault();
 
-  // window.addEventListener('keydown', onArrowKeyPress);
+  refs.modalCloseBtn.addEventListener('click', onCloseBtnClick);
+  refs.modalOverlay.addEventListener('click', onCloseBtnClick);
   window.addEventListener('keydown', onEscKeyPress);
-
+  window.addEventListener('keydown', onArrowKeyPress);
 
   const currImage = evt.target;
-  const imageParrent = currImage.closest('.gallery__link')
-  // console.log(currImage.dataset.source); //url большого изображения
-  const largeImgLink = imageParrent.href; //url большого изображения
-
 
   const isGalleryImage = evt.target.classList.contains('gallery__image');
   console.log(isGalleryImage);
@@ -61,17 +56,17 @@ function onImageClick(evt) {
   }
 
   refs.modal.classList.add('is-open');
-  refs.modalImgEl.src = largeImgLink;
+  refs.modalImgEl.src = currImage.dataset.source;
 }
 
 function onCloseBtnClick() {
+  refs.modalCloseBtn.removeEventListener('click', onCloseBtnClick);
+  refs.modalOverlay.removeEventListener('click', onCloseBtnClick);
   window.removeEventListener('keydown', onEscKeyPress);
+  window.removeEventListener('keydown', onArrowKeyPress);
+
   refs.modal.classList.remove('is-open');
   refs.modalImgEl.src = '';
-}
-
-function onOverlayClick() {
-  onCloseBtnClick();
 }
 
 function onEscKeyPress(evt) {
@@ -82,34 +77,39 @@ function onEscKeyPress(evt) {
 
 }
 
+function onRightChange() {
 
-console.log(refs.modalImgEl.src);
+  if (currentIndex === imagesGallery.length - 1) {
+    currentIndex = -1;
+  }
+  currentIndex += 1;
+  changeCurrentIngex()
+}
 
+function onLeftChange() {
 
-
-
-
-
-
-
-
-// ===== 3 часть доп задания в процессе
-
-
-// function onArrowKeyPress(evt) {
-//   const ARROW_RIGHT_KEY = 'ArrowRight';
-//   const ARROW_LEFT_KEY = 'ArrowLeft';
-
-
-//   return imagesGallery.forEach((img, i = 0, array) => {
-    
-//     if (refs.modalImgEl.src === img.original && evt.code === ARROW_RIGHT_KEY) {
-//       refs.modalImgEl.src = array[i + 1].original;
-//     }
-//   });
-
-// }
+  if (currentIndex === 0) {
+    currentIndex = imagesGallery.length;
+  }
+  currentIndex -= 1;
+  changeCurrentIngex()
+}
 
 
+function changeCurrentIngex() {
+  refs.modalImgEl.src = imagesGallery[currentIndex].original;
+  refs.modalImgEl.alt = imagesGallery[currentIndex].description;
+}
 
+
+function onArrowKeyPress(evt) {
+  const ARROW_RIGHT_KEY = 'ArrowRight';
+  const ARROW_LEFT_KEY = 'ArrowLeft';
+  if (evt.code === ARROW_RIGHT_KEY) {
+    onRightChange();
+  }
+  if (evt.code === ARROW_LEFT_KEY) {
+    onLeftChange();
+  }
+}
 
