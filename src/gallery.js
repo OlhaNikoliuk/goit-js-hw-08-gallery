@@ -11,13 +11,14 @@ const refs = {
   modalOverlay: document.querySelector('.lightbox__overlay'),
 }
 
-let currentIndex = 0;
+let currentIndex = null;
 
 
 const galleryMarkup = createImageCardMarkup(imagesGallery);
 refs.galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
 
 refs.galleryContainer.addEventListener('click', onImageClick);
+
 
 function createImageCardMarkup(images) {
 
@@ -38,6 +39,7 @@ function createImageCardMarkup(images) {
   }).join('');
 }
 
+
 function onImageClick(evt) {
   evt.preventDefault();
 
@@ -55,8 +57,16 @@ function onImageClick(evt) {
     return;
   }
 
+  imagesGallery.forEach((el, ind) => {
+
+    if (el.original.includes(evt.target.dataset.source)) {
+      currentIndex = ind;
+    }
+  });
+
   refs.modal.classList.add('is-open');
   refs.modalImgEl.src = currImage.dataset.source;
+  refs.modalImgEl.alt = currImage.alt;
 }
 
 function onCloseBtnClick() {
